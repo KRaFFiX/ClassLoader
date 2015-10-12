@@ -1,3 +1,6 @@
+before_script:
+  - apt-get install phpunit
+
 # PHP 5.5
 php:5.5:
   image: bobey/docker-gitlab-ci-runner-php5.5
