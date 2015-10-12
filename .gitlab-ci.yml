@@ -1,5 +1,5 @@
 before_script:
-  - apt-get install phpunit
+  - apt-get install -y phpunit
 
 # PHP 5.5
 php:5.5:
