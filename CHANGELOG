@@ -1,0 +1,7 @@
+Version 0.1
+==============================
+Features
+---------------
+ - Automatisches Laden von PHP-Klassen bzw. PHP-Dateien anhand von Namespaces
+ - Registrierung von Namespaces für bestimmte Verzeichnisse
+ - Festlegen eines Lade-Verzeichnisses, von dem die PHP-Klassen geladen werden sollen
