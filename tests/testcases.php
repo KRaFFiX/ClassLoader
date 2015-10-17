@@ -8,7 +8,7 @@ use tests\example\Example;
 use example\Other;
 
 // load and register classloader
-require_once __DIR__.'/../src/ClassLoader.php';
+require_once __DIR__.'/../src/classloader.php';
 $classloader = new ClassLoader;
 $classloader->registerNamespace("example", __DIR__);
 
