@@ -54,6 +54,8 @@ class ClassLoader
      * Attempts to load the given class.
      *
      * @param string $class specifies the full class name, the class to load
+     *
+     * @return bool returns if loading was successful
      */
     public function load($class)
     {
@@ -63,29 +65,52 @@ class ClassLoader
             $include_path = ".";
         }
         set_include_path($include_path.DIRECTORY_SEPARATOR);
-        // try autoloading the right php file
-        spl_autoload($class, implode(',', $this->extensions));
-        // if load was not successful try loading manually
-        if (!class_exists($class)) {
-            $parts = explode('\\', $class);
-            if (count($parts) >= 2) {
-                $namespace = $parts[0];
-                if (array_key_exists($namespace, $this->namespaces)) {
-                    $dir = $this->namespaces[$namespace];
-                    foreach ($this->extensions as $extension) {
-                        $path = $dir.DIRECTORY_SEPARATOR.strtolower(str_replace('\\', DIRECTORY_SEPARATOR, $class)).$extension;
-                        if (isset($this->load_dir)) {
-                            $path = $this->load_dir.DIRECTORY_SEPARATOR.$path;
-                        }
-                        if (file_exists($path)) {
-                            require_once $path;
-                            return true;
-                        }
+        if(!$this->autoload($class)){
+            return $this->manualload($class);
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * tries loading given class using spl_autoload function
+     *
+     * @param string $class specifies the full class name, the class to load
+     *
+     * @return bool returns if loading was successful
+     */
+    public function autoload($class)
+    {
+        spl_autoload($class, implode(",", $this->extensions));
+        return class_exists($class);
+    }
+
+    /**
+     * tries loading given class manually
+     *
+     * @param string $class specifies the full class name, the class to load
+     *
+     * @return bool returns if loading was successful
+     */
+    public function manualload($class)
+    {
+        $parts = explode('\\', $class);
+        if (count($parts) >= 2) {
+            $namespace = $parts[0];
+            if (array_key_exists($namespace, $this->namespaces)) {
+                $dir = $this->namespaces[$namespace];
+                foreach ($this->extensions as $extension) {
+                    $path = $dir.DIRECTORY_SEPARATOR.strtolower(str_replace('\\', DIRECTORY_SEPARATOR, $class)).$extension;
+                    if (isset($this->load_dir)) {
+                        $path = $this->load_dir.DIRECTORY_SEPARATOR.$path;
+                    }
+                    if (file_exists($path)) {
+                        require_once $path;
+                        return true;
                     }
                 }
             }
-        } else {
-            return true;
         }
         return false;
     }
