@@ -63,6 +63,8 @@ class ClassLoader
             $include_path = ".";
         }
         set_include_path($include_path.DIRECTORY_SEPARATOR);
+        echo "Current include path is: $include_path\n";
+        echo "Try loading: $class\n";
         // try autoloading the right php file
         spl_autoload($class, implode(',', $this->extensions));
         // if load was not successful try loading manually
