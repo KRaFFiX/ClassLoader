@@ -63,8 +63,6 @@ class ClassLoader
             $include_path = ".";
         }
         set_include_path($include_path.DIRECTORY_SEPARATOR);
-        echo "Current include path is: $include_path\n";
-        echo "Try loading: $class\n";
         // try autoloading the right php file
         spl_autoload($class, implode(',', $this->extensions));
         // if load was not successful try loading manually
@@ -75,23 +73,20 @@ class ClassLoader
                 if (array_key_exists($namespace, $this->namespaces)) {
                     $dir = $this->namespaces[$namespace];
                     foreach ($this->extensions as $extension) {
-                        $path = $dir.DIRECTORY_SEPARATOR.str_replace('\\', DIRECTORY_SEPARATOR, $class).$extension;
+                        $path = $dir.DIRECTORY_SEPARATOR.strtolower(str_replace('\\', DIRECTORY_SEPARATOR, $class)).$extension;
                         if (isset($this->load_dir)) {
                             $path = $this->load_dir.DIRECTORY_SEPARATOR.$path;
                         }
                         if (file_exists($path)) {
                             require_once $path;
-                            echo "Found $class with own function\n";
                             return true;
                         }
                     }
                 }
             }
         } else {
-            echo "Found $class with spl_autoload\n";
             return true;
         }
-        echo "Class $class could not been found\n";
         return false;
     }
 
