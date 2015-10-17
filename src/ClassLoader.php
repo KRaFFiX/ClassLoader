@@ -79,12 +79,18 @@ class ClassLoader
                         }
                         if (file_exists($path)) {
                             require_once $path;
-                            break;
+                            echo "Found $class with own function\n";
+                            return true;
                         }
                     }
                 }
             }
+        } else {
+            echo "Found $class with spl_autoload\n";
+            return true;
         }
+        echo "Class $class could not been found\n";
+        return false;
     }
 
     /**

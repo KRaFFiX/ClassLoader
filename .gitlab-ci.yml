@@ -1,6 +1,13 @@
 before_script:
   - apt-get install -y phpunit
 
+# PHP 5.4
+php:5.4:
+  image: bobey/docker-gitlab-ci-runner-php5.4
+  script:
+    - echo "Running PHPUnit Tests"
+    - phpunit tests/*
+
 # PHP 5.5
 php:5.5:
   image: bobey/docker-gitlab-ci-runner-php5.5
