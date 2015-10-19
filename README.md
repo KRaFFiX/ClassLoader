@@ -14,7 +14,7 @@ Der ClassLoader lädt automatisch PHP-Dateien bzw. -Klassen. Hierfür erfolgt an
 ```php
 <?php
 use Drips\ClassLoader\ClassLoader;
-require_once 'ClassLoader.php';
+require_once 'classloader.php';
 $loader = new ClassLoader;
 ```
 
