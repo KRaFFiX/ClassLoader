@@ -10,4 +10,4 @@ php:
   - nightly
 script:
   - echo "Running PHPUnit Tests"
-  - phpunit tests/*
+  - phpunit --coverage-clover build/logs/clover.xml tests/*
