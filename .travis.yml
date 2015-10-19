@@ -9,5 +9,7 @@ php:
   - hhvm
   - nightly
 script:
+  - echo {\"require-dev\":{\"codeclimate/php-test-reporter\":\"dev-master\"}} > composer.json
+  - php composer.phar install --dev
   - echo "Running PHPUnit Tests"
   - phpunit --coverage-clover build/logs/clover.xml tests/*
