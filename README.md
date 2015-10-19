@@ -1,6 +1,8 @@
 # ClassLoader
 
 [![Build Status](https://travis-ci.org/Prowect/ClassLoader.svg)](https://travis-ci.org/Prowect/ClassLoader)
+[![Code Climate](https://codeclimate.com/github/Prowect/ClassLoader/badges/gpa.svg)](https://codeclimate.com/github/Prowect/ClassLoader)
+[![Test Coverage](https://codeclimate.com/github/Prowect/ClassLoader/badges/coverage.svg)](https://codeclimate.com/github/Prowect/ClassLoader/coverage)
 
 ## Beschreibung
 
