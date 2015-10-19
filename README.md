@@ -1,6 +1,6 @@
 # ClassLoader
 
-![Build-Status](https://gitlab.com/ci/projects/10677/status.png?ref=master)
+[![Build Status](https://travis-ci.org/Prowect/ClassLoader.svg)](https://travis-ci.org/Prowect/ClassLoader)
 
 ## Beschreibung
 
