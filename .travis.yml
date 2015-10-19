@@ -1,3 +1,6 @@
+addons:
+    code_climate:
+        repo_token: 424243176a6ac96e798849bca5b51eb263b83dc7bf6181edd7f18cd999e4e33d
 language: php
 php:
   - 5.4
