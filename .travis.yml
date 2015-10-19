@@ -1,6 +1,6 @@
 addons:
     code_climate:
-        repo_token: 424243176a6ac96e798849bca5b51eb263b83dc7bf6181edd7f18cd999e4e33d
+        repo_token: ecd1af07b8276c147bb918eb8e280bd4d8edfe4944fda4f0e59217f236624116
 language: php
 php:
   - 5.4
