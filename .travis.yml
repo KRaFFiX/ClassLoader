@@ -1,6 +1,3 @@
-addons:
-    code_climate:
-        repo_token: ecd1af07b8276c147bb918eb8e280bd4d8edfe4944fda4f0e59217f236624116
 language: php
 php:
   - 5.4
@@ -9,7 +6,8 @@ php:
   - hhvm
   - nightly
 script:
-  - echo {\"require-dev\":{\"codeclimate/php-test-reporter\":\"dev-master\"}} > composer.json
-  - composer install --dev
+  - composer require codeclimate/php-test-reporter --dev
   - echo "Running PHPUnit Tests"
   - phpunit --coverage-clover build/logs/clover.xml tests/*
+after_script:
+  - vendor/bin/test-reporter
