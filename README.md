@@ -3,6 +3,9 @@
 [![Build Status](https://travis-ci.org/Prowect/ClassLoader.svg)](https://travis-ci.org/Prowect/ClassLoader)
 [![Code Climate](https://codeclimate.com/github/Prowect/ClassLoader/badges/gpa.svg)](https://codeclimate.com/github/Prowect/ClassLoader)
 [![Test Coverage](https://codeclimate.com/github/Prowect/ClassLoader/badges/coverage.svg)](https://codeclimate.com/github/Prowect/ClassLoader/coverage)
+[![Downloads](https://img.shields.io/github/downloads/Prowect/ClassLoader/latest/total.svg)](https://github.com/Prowect/ClassLoader)
+[![Releases](https://img.shields.io/github/release/Prowect/ClassLoader.svg)](https://github.com/Prowect/ClassLoader/releases)
+[![License]](https://img.shields.io/github/license/Prowect/ClassLoader.svg)(https://github.com/Prowect/ClassLoader/blob/master/LICENSE.md)
 
 ## Beschreibung
 
