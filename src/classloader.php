@@ -59,18 +59,10 @@ class ClassLoader
      */
     public function load($class)
     {
-        // set include path
-        $include_path = $this->load_dir;
-        if(!isset($this->load_dir)){
-            $include_path = ".";
-        }
-        set_include_path($include_path.DIRECTORY_SEPARATOR);
         if(!$this->autoload($class)){
             return $this->manualload($class);
-        } else {
-            return true;
         }
-        return false;
+        return true;
     }
 
     /**
