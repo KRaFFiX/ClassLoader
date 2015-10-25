@@ -45,9 +45,7 @@ class ClassLoader
      */
     public function __construct()
     {
-        spl_autoload_register(function ($class) {
-            $this->load($class);
-        });
+        spl_autoload_register(array($this, "load"));
     }
 
     /**
