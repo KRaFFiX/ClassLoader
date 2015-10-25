@@ -9,14 +9,13 @@ use example\Other;
 
 // load and register classloader
 require_once __DIR__.'/../src/classloader.php';
-$classloader = new ClassLoader;
-$classloader->registerNamespace("example", __DIR__);
+$classloader = new ClassLoader();
 
 class TestCases extends PHPUnit_Framework_TestCase
 {
     public function testCanLoadTestClass()
     {
-        $this->assertEquals(TestClass::hello(), "Hello");
+        $this->assertEquals(TestClass::hello(), 'Hello');
     }
 
     public function testCanLoadExample()
@@ -26,6 +25,13 @@ class TestCases extends PHPUnit_Framework_TestCase
 
     public function testCanLoadOther()
     {
+        $classloader = new ClassLoader;
+        $classloader->registerNamespace('example', __DIR__);
         $this->assertTrue(Other::isTrue());
+    }
+
+    public function testCanNotLoad()
+    {
+        $this->assertFalse(is_callable("NotRealClass::test"));
     }
 }
