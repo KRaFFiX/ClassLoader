@@ -4,6 +4,7 @@
  * Created by Prowect
  * Author: Raffael Kessler
  * Date: 13.10.2015 - 18:30
+ * Copyright: Prowect
  */
 
 namespace Drips\ClassLoader;
@@ -11,37 +12,41 @@ namespace Drips\ClassLoader;
 /**
  * Class ClassLoader
  *
- * This class allows the automatic loading of PHP files or PHP classes based on
- * their namespaces.
+ * Diese Klasse ermöglicht das selbständige Laden von PHP-Klassen.
+ * Somit können PHP-Dateien automatisch eingebunden werden, wenn eine Klasse
+ * benötigt wird, die noch nicht included ist.
+ *
+ * Anhand des Namespaces der jeweiligen Klasse wird der entsprechende Dateipfad
+ * ermittelt.
  */
 class ClassLoader
 {
     /**
-     * Specifies the directory in which according to the associated PHP files to
-     * be searched.
+     * Legt fest, in welchem Verzeichnis der ClassLoader nach entsprechenden
+     * PHP-Dateien suchen soll.
      *
      * @var string
      */
     public $load_dir;
 
     /**
-     * Defines valid file extensions to be searched for by those fixed.
+     * Beinhaltet alle zulässigen Dateiendungen, nach denen gesucht werden soll.
      *
      * @var array
      */
-    public $extensions = array('.php', '.class.php', '.inc.php');
+    public $extensions = array('.php');
 
     /**
-     * Contains the assignment of different namespaces to different (sub)
-     * directories
+     * Beinhaltet alle manuell definierten Namespaces und in welchem Verzeichnis
+     * diese zu finden sind.
      *
      * @var array
      */
     protected $namespaces = array();
 
     /**
-     * Creates a new class loader instance and registers the same classloader by
-     * spl_autoload_register.
+     * Erzeugt eine neue ClassLoader-Instanz und registriert sich automatisch
+     * mithilfe der integrierten PHP-Funktion spl_autoload_register.
      */
     public function __construct()
     {
@@ -49,11 +54,11 @@ class ClassLoader
     }
 
     /**
-     * Attempts to load the given class.
+     * Versucht die übergebene Klasse zu laden. Gibt TRUE oder FALSE zurück.
      *
-     * @param string $class specifies the full class name, the class to load
+     * @param string $class Gibt den vollständigen Klassennamen an (mit Namespace), der Klasse, die geladen werden soll.
      *
-     * @return bool returns if loading was successful
+     * @return bool Gibt zurück, ob das Laden der Klasse möglich war oder nicht.
      */
     public function load($class)
     {
@@ -64,11 +69,13 @@ class ClassLoader
     }
 
     /**
-     * tries loading given class using spl_autoload function
+     * Versucht die Klasse automatisch mithilfe der spl_autoload-Funktion zu laden.
+     * Anschließend wird TRUE oder FALSE zurückgeliefert, je nachdem ob das Laden
+     * der Klasse erfolgreich war oder nicht.
      *
-     * @param string $class specifies the full class name, the class to load
+     * @param string $class Gibt den vollständigen Klassennamen an (mit Namespace), der Klasse, die geladen werden soll.
      *
-     * @return bool returns if loading was successful
+     * @return bool Gibt zurück, ob das Laden der Klasse möglich war oder nicht.
      */
     public function autoload($class)
     {
@@ -77,11 +84,15 @@ class ClassLoader
     }
 
     /**
-     * tries loading given class manually
+     * Versucht die Klasse manuell zu laden. Dabei wird versucht anhand der
+     * manuell registrierten Namespaces die Klasse richtig in einen Dateipfad
+     * aufzulösen.
+     * Im Gegensatz zur automatischen Lade-Funktion (autoload) wird hierbei das
+     * load_dir berücksichtigt.
      *
-     * @param string $class specifies the full class name, the class to load
+     * @param string $class Gibt den vollständigen Klassennamen an (mit Namespace), der Klasse, die geladen werden soll.
      *
-     * @return bool returns if loading was successful
+     * @return bool Gibt zurück, ob das Laden der Klasse möglich war oder nicht.
      */
     public function manualload($class)
     {
@@ -89,27 +100,49 @@ class ClassLoader
         if (count($parts) >= 2) {
             $namespace = $parts[0];
             if (array_key_exists($namespace, $this->namespaces)) {
-                $dir = $this->namespaces[$namespace];
-                foreach ($this->extensions as $extension) {
-                    $path = $dir.DIRECTORY_SEPARATOR.strtolower(str_replace('\\', DIRECTORY_SEPARATOR, $class)).$extension;
-                    if (isset($this->load_dir)) {
-                        $path = $this->load_dir.DIRECTORY_SEPARATOR.$path;
-                    }
-                    if (file_exists($path)) {
-                        require_once $path;
-                        return true;
-                    }
+                if($this->tryload($class, $this->namespaces[$namespace])){
+                    return true;
                 }
+            }
+        }
+        return $this->tryload($class);
+    }
+
+    /**
+     * Versucht eine bestimmte Klasse zu laden, ohne die registrierten Namespaces
+     * zu berücksichtigen. Außerdem kann ein Verzeichnis übergeben werden, in
+     * welchem nach der Klasse gesucht werden soll.
+     * Ist das Attribut load_dir gesetzt, wird dieses dem übergebenen Dateipfad
+     * vorangestellt, somit ist der übergebene Verzeichnispfad dann lediglich ein
+     * Unterverzeichnis des load_dir-Verzeichnisses.
+     *
+     * @param string $class Gibt den vollständigen Klassennamen an (mit Namespace), der Klasse, die geladen werden soll.
+     * @param string $dir Gibt das Unterverzeichnis an, in welchem, nach der Klasse, gesucht werden soll. (Optional)
+     *
+     * @return bool Gibt zurück, ob das Laden der Klasse möglich war oder nicht.
+     */
+    protected function tryload($class, $dir = "")
+    {
+        foreach ($this->extensions as $extension) {
+            $path = $dir.DIRECTORY_SEPARATOR.strtolower(str_replace('\\', DIRECTORY_SEPARATOR, $class)).$extension;
+            if (isset($this->load_dir)) {
+                $path = $this->load_dir.DIRECTORY_SEPARATOR.$path;
+            }
+            if (file_exists($path)) {
+                require_once $path;
+                return true;
             }
         }
         return false;
     }
 
     /**
-     * Allows you to associate different namespaces to different directories.
+     * Ermöglich das manuelle registrieren von Namespaces.
+     * Hierbei wird ein bestimmter Namespace (Beginn) festgelegt und in welchem
+     * Verzeichnis dieser zu finden ist.
      *
-     * @param string $namespace sets the namespace, which is located in a subdirectory.
-     * @param string $directory specifies the target directory where the files of the specified namespaces are
+     * @param string $namespace Gibt den Namespace an, welcher sich in einem Unterverzeichnis befindet.
+     * @param string $directory Gibt das Zielverzeichnis an, in welchem sich die Klassen des übergebenen Namespaces befinden.
      */
     public function registerNamespace($namespace, $directory)
     {

@@ -39,3 +39,19 @@ $loader->load_dir = "core/lib";
 ```
 
 Dadurch werden alle Klassen die vom ClassLoader geladen werden sollen im Verzeichnis `core/lib` gesucht.
+
+## Extensions hinzufügen
+
+Wenn neben der Standard-Endung `.php` auch weitere Extensions zugelassen werden sollen, kann dies wie folgt erreicht werden:
+
+```php
+<?php
+$loader->extensions[] = ".class.php";
+```
+
+Die aktuellen Extensions können wie folgt abgefragt werden.
+
+```php
+<?php
+$loader->extensions;
+```

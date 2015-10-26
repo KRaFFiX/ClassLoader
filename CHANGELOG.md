@@ -1,3 +1,14 @@
+Version 0.1.2
+==============================
+Features
+---------------
+ - `tryload`-Methode hinzugefügt
+ - Extensions (Dateiendungen) können nach wie vor manuell hinzugefügt werden - aktuell ist standardmäßig ausschließlich die Endung `.php` zulässig (Performance)
+
+Bugs
+---------------
+ - Ist das load_dir Attribut gesetzt worden, wurde dennoch nicht die entsprechende Klasse geladen.
+
 Version 0.1.1
 ==============================
 Features
